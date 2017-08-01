@@ -25,6 +25,30 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
 	// Add random Gaussian noise to each particle.
 	// NOTE: Consult particle_filter.h for more information about this method (and others in this file).
 
+    num_particles = 100;
+    particles.resize(num_particles);
+	weights.resize(num_particles);
+	
+    std::default_random_engine generator;
+    std::normal_distribution<double> dist_x(x,std[0]);
+    std::normal_distribution<double> dist_y(y,std[1]);
+	std::normal_distribution<double> dist_theta(theta,std[2]);
+
+	for (int i=0;i<num_particles;i++){	
+		// id of the particle
+		particles[i].id = i;
+		// x y theta position + noise
+		float init_x     = dist_x(generator);
+		float init_y     = dist_y(generator);
+		float init_theta = dist_theta(generator);
+		particles[i].x     = init_x;
+		particles[i].y     = init_y;
+		particles[i].theta = init_theta;			
+		// set all initial weights to 1
+		weights[i] = 1.0;
+	}
+	// initialize flag
+	is_initialized = true;
 }
 
 void ParticleFilter::prediction(double delta_t, double std_pos[], double velocity, double yaw_rate) {
