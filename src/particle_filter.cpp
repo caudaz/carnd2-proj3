@@ -34,7 +34,7 @@ void ParticleFilter::init(double x, double y, double theta, double std[]) {
     std::normal_distribution<double> dist_y(y,std[1]);
 	std::normal_distribution<double> dist_theta(theta,std[2]);
 
-	for (int i=0;i<num_particles;i++){	
+	for (int i=0; i < num_particles; i++){	
 		// id of the particle
 		particles[i].id = i;
 		// x y theta position + noise
@@ -82,8 +82,10 @@ void ParticleFilter::dataAssociation(std::vector<LandmarkObs> predicted, std::ve
 
 }
 
-void ParticleFilter::updateWeights(double sensor_range, double std_landmark[], 
-		std::vector<LandmarkObs> observations, Map map_landmarks) {
+void ParticleFilter::updateWeights(double sensor_range, 
+                                   double std_landmark[], 
+		                           std::vector<LandmarkObs> observations,
+								   Map map_landmarks) {
 	// TODO: Update the weights of each particle using a mult-variate Gaussian distribution. You can read
 	//   more about this distribution here: https://en.wikipedia.org/wiki/Multivariate_normal_distribution
 	// NOTE: The observations are given in the VEHICLE'S coordinate system. Your particles are located
@@ -94,6 +96,65 @@ void ParticleFilter::updateWeights(double sensor_range, double std_landmark[],
 	//   and the following is a good resource for the actual equation to implement (look at equation 
 	//   3.33
 	//   http://planning.cs.uiuc.edu/node99.html
+
+for (int i = 0; i < particles.size(); i++){
+
+	float prob = 1.0;
+
+	// new vector to store transformed observations
+	std::vector<LandmarkObs> observations_transf; 
+
+	// iterator for obsrv   Output = transformed observations into maps global c.s.
+	for (LandmarkObs obsrv : observations){
+		LandmarkObs obs_tf;
+		obs_tf.id = obsrv.id;
+		obs_tf.x = particles[i].x + cos(particles[i].theta)*obsrv.x + sin(particles[i].theta)*obsrv.y;
+		obs_tf.y = particles[i].y - sin(particles[i].theta)*obsrv.x + cos(particles[i].theta)*obsrv.y;
+		//observations_transf.push_back(obs_tf);		
+
+		// distances for each observation
+		vector <double> distances;
+
+		// iterator for landm
+		for (Map::single_landmark_s landm : map_landmarks.landmark_list) {
+							double dst = dist(landm.x_f, landm.y_f, obs_tf.x, obs_tf.y);
+							// contains : distances to all landmarks
+							distances.push_back(dst);
+		}
+
+		vector<double>::iterator result = min_element(begin(distances), end(distances));
+		Map::single_landmark_s lm = map_landmarks.landmark_list[distance(begin(distances), result)];
+		// this observation is closest to this landmark id
+		obs_tf.id = lm.id_i;
+		// contains : 1-closest landmark id, 2-transf x-loc , 3-transf y-loc
+		observations_transf.push_back(obs_tf);
+
+	float x = obs_tf.x;
+	float y = obs_tf.y;
+	float ux = map_landmarks.landmark_list[lm.id_i].x_f;
+	float uy = map_landmarks.landmark_list[lm.id_i].y_f;	
+	float Pa = 1/(2 * M_PI * std_landmark[0] * std_landmark[1]);
+	float Pb = exp(- (pow(x-ux,2)/(2*pow(std_landmark[0],2)) + pow(y-uy,2)/(2*pow(std_landmark[1],2))));
+	float P = Pa * Pb;
+	
+	prob *= P;
+	
+	}		
+
+	particles[i].weight = prob;	
+	cout << "i= " << i << "particles[i].weight = " << particles[i].weight << endl;
+
+	/* 
+	def P(x,y,sx,sy,ux,uy):
+	P=1/(2*math.pi*sx*sy) * math.exp(- ( ((x-ux)**2)/(2*sx**2) + ((y-uy)**2)/(2*sy**2)))
+	Pobs1 = P(xtobs1,ytobs1,0.3,0.3,L[0][0],L[0][1])
+	Pobs2 = P(xtobs2,ytobs2,0.3,0.3,L[1][0],L[1][1])
+	Pobs3 = P(xtobs3,ytobs3,0.3,0.3,L[1][0],L[1][1])
+	Part_final_weight = Pobs1 * Pobs2 * Pobs3 
+	*/
+		
+	}
+
 }
 
 void ParticleFilter::resample() {
