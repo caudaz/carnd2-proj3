@@ -118,6 +118,7 @@ for (int i = 0; i < particles.size(); i++){
 		// iterator for landm
 		for (Map::single_landmark_s landm : map_landmarks.landmark_list) {
 							double dst = dist(landm.x_f, landm.y_f, obs_tf.x, obs_tf.y);
+							cout << "i= " << i << "dst = " << dst << endl;
 							// contains : distances to all landmarks
 							distances.push_back(dst);
 		}
@@ -136,13 +137,20 @@ for (int i = 0; i < particles.size(); i++){
 	float Pa = 1/(2 * M_PI * std_landmark[0] * std_landmark[1]);
 	float Pb = exp(- (pow(x-ux,2)/(2*pow(std_landmark[0],2)) + pow(y-uy,2)/(2*pow(std_landmark[1],2))));
 	float P = Pa * Pb;
+	cout << "x = obs_tf.x= " << x << endl;
+	cout << "y = obs_tf.y= " << y << endl;
+	cout << "ux = map_landmarks.landmark_list[lm.id_i].x_f= " << ux << endl;
+	cout << "uy = map_landmarks.landmark_list[lm.id_i].y_f= " << uy << endl;
+	cout << "Pa = " << Pa << endl;
+	cout << "Pb = " << Pb << endl;
+	cout << "P  = " << P << endl;
 	
 	prob *= P;
 	
 	}		
 
 	particles[i].weight = prob;	
-	cout << "i= " << i << "particles[i].weight = " << particles[i].weight << endl;
+	//cout << "i= " << i << "particles[i].weight = " << particles[i].weight << endl;
 
 	/* 
 	def P(x,y,sx,sy,ux,uy):
