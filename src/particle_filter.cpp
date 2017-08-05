@@ -104,14 +104,12 @@ void ParticleFilter::updateWeights(double sensor_range,
 	//   3.33
 	//   http://planning.cs.uiuc.edu/node99.html
 
+	// for every particle
 	for (int i = 0; i < particles.size(); i++){
 
 		float prob = 1.0;
 
-		// new vector to store transformed observations
-		std::vector<LandmarkObs> observations_transf; 
-
-		// iterator for obsrv   Output = transformed observations into maps global c.s.
+		// for every observation -> transform into global CS viewed from particle
 		for (LandmarkObs obsrv : observations){
 			LandmarkObs obs_tf;
 			obs_tf.id = obsrv.id;
@@ -126,9 +124,8 @@ void ParticleFilter::updateWeights(double sensor_range,
 			//cout << "x = obs_tf.x= " << obs_tf.x << endl;
 			//cout << "y = obs_tf.y= " << obs_tf.y << endl;	
 
-			// distances for each observation
+			// distances to each landmark (from observations)
 			vector <double> distances;
-
 			for(int j = 0; j < map_landmarks.landmark_list.size(); ++j){
 				// distance from landmark to transformed observation
 				double dst = dist(map_landmarks.landmark_list[j].x_f, map_landmarks.landmark_list[j].y_f, obs_tf.x, obs_tf.y);
@@ -136,14 +133,11 @@ void ParticleFilter::updateWeights(double sensor_range,
 				distances.push_back(dst);
 				}
 
+			// find the shortest distance
 			vector<double>::iterator result = min_element(begin(distances), end(distances));
 			Map::single_landmark_s lm = map_landmarks.landmark_list[distance(begin(distances), result)];
-			// this observation is closest to this landmark id
-			//cout << "closest landmark id is= " << lm.id_i - 1 << " " << endl;
-			obs_tf.id = lm.id_i;  //  ????? should this be landm.id_i ?????????????????????
-			// contains : 1-closest landmark id, 2-transf x-loc , 3-transf y-loc
-			observations_transf.push_back(obs_tf);
 
+			// multivariate gaussian probability
 			float x = obs_tf.x; 
 			float y = obs_tf.y; 
 			float ux = map_landmarks.landmark_list[lm.id_i-1].x_f; ;
@@ -158,6 +152,7 @@ void ParticleFilter::updateWeights(double sensor_range,
 			//cout << "p*p*p*p....= " << prob << endl;
 		}		
 
+	// update weights
 	weights[i] = prob;
 	particles[i].weight = prob;
 	//cout << "i= " << i << "	weights[i]=" << weights[i] << " particles[i].weight= " << particles[i].weight << endl;
