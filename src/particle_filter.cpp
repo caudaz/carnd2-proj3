@@ -64,12 +64,20 @@ void ParticleFilter::prediction(double delta_t, double std_pos[], double velocit
 
     // very important for this to be outside the particle loop to be consistent with generated values!!!!!!! 
 	std::default_random_engine generator;
-	
+		
 	for (int i=0; i < num_particles; i++){	
-	    // prediction using constant velocity and yawrate
+	    // prediction using constant velocity and yawrate = 0
+        if (fabs(yaw_rate) <0.001){
+		particles[i].x     = particles[i].x + velocity * cos(particles[i].theta) * delta_t;
+		particles[i].y     = particles[i].y + velocity * sin(particles[i].theta) * delta_t;
+		particles[i].theta = particles[i].theta;		
+		}
+		// prediction using constant velocity and yawrate
+		else{
 		particles[i].x     = particles[i].x + velocity / yaw_rate * (sin(particles[i].theta + yaw_rate * delta_t) - sin(particles[i].theta));
 		particles[i].y     = particles[i].y + velocity / yaw_rate * (cos(particles[i].theta) - cos(particles[i].theta + yaw_rate * delta_t));
 		particles[i].theta = particles[i].theta + yaw_rate * delta_t;
+		}
         // noraml dist about predicted x y theta 
 		std::normal_distribution<double> dist_x(particles[i].x, std_pos[0]);
 		std::normal_distribution<double> dist_y(particles[i].y, std_pos[1]);

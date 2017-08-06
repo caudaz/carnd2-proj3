@@ -2,8 +2,7 @@
 
 **Term2 – Project3: Unscented Kalman Filter (UKF)**
 
-![](./media/image1.png){width="4.831944444444445in"
-height="2.502795275590551in"}
+![](./media/image1.png)
 
 **INTRODUCTION**
 
@@ -16,8 +15,7 @@ be found.
 
 **PARTICLE FILTER FLOWCHART (UDACITY)**
 
-![](./media/image2.png){width="6.404486001749781in"
-height="3.6098009623797025in"}
+![](./media/image2.png)
 
 **INITIALIZATION**
 
@@ -26,8 +24,7 @@ sufficient). All particles were assigned an initial X Y YAW values in
 global coordinate system coming from the GPS reading. Sensor Gaussian
 noise was added to those values to make particles have different values.
 
-![](./media/image3.png){width="2.7359995625546807in"
-height="2.50503937007874in"}
+![](./media/image3.png)
 
 **PREDICTION STEP**
 
@@ -51,8 +48,7 @@ standard deviation of the measurement instruments.
 
 A map is provided with 42 landmarks with location in global CS:
 
-![](./media/image4.png){width="4.44799978127734in"
-height="2.9895647419072615in"}
+![](./media/image4.png)
 
 The update step is performed in the ParticleFilter::updateWeights
 function. It uses as inputs:
@@ -101,5 +97,4 @@ The particle model was able to use all 42 landmarks, observations, speed
 and yaw rate to stay on track. The error stayed within the allowed
 limits.
 
-![](./media/image5.png){width="5.792000218722659in"
-height="2.8957589676290465in"}
+![](./media/image5.png)
