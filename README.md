@@ -2,7 +2,9 @@
 
 **Term2 – Project3: Unscented Kalman Filter (UKF)**
 
-![](./media/image1.png)
+![C:\\Users\\ab\\AppData\\Local\\Microsoft\\Windows\\INetCache\\Content.Word\\2017-08-05
+11\_15\_02-Photos.png](./media/image1.png){width="4.831944444444445in"
+height="2.502795275590551in"}
 
 **INTRODUCTION**
 
@@ -15,7 +17,9 @@ be found.
 
 **PARTICLE FILTER FLOWCHART (UDACITY)**
 
-![](./media/image2.png)
+![C:\\Users\\ab\\AppData\\Local\\Microsoft\\Windows\\INetCache\\Content.Word\\2017-08-05
+10\_40\_03-Photos.png](./media/image2.png){width="6.404486001749781in"
+height="3.6098009623797025in"}
 
 **INITIALIZATION**
 
@@ -23,8 +27,6 @@ The number of particles is chosen empirically (on this case 100 seem
 sufficient). All particles were assigned an initial X Y YAW values in
 global coordinate system coming from the GPS reading. Sensor Gaussian
 noise was added to those values to make particles have different values.
-
-![](./media/image3.png)
 
 **PREDICTION STEP**
 
@@ -46,18 +48,21 @@ standard deviation of the measurement instruments.
 
 **UPDATE STEP**
 
-A map is provided with 42 landmarks with location in global CS:
-
-![](./media/image4.png)
-
 The update step is performed in the ParticleFilter::updateWeights
 function. It uses as inputs:
 
 -   sensor\_range
 
--   landmarks
+-   landmarks (map is provided with 42 landmarks with location in global
+    CS):
 
--   observations(measurements to each landmark)
+> ![](./media/image3.png){width="2.9518799212598426in"
+> height="1.9840004374453193in"}
+
+-   observations(measurements to each landmark):
+
+> ![](./media/image4.png){width="2.16799978127734in"
+> height="1.98498687664042in"}
 
 -   the standard deviation of those observations
 
@@ -73,8 +78,8 @@ The *Update pseudocode* is as follows:
 >
 > *-find distance between transformed observation and landmark*
 >
-> *-use the closest landmark -&gt; compute multivariate gaussian
-> probability*
+> *-use the closest landmark(“assignment”) -&gt; compute multivariate
+> gaussian probability*
 >
 > *-multiply probability*
 >
@@ -97,4 +102,5 @@ The particle model was able to use all 42 landmarks, observations, speed
 and yaw rate to stay on track. The error stayed within the allowed
 limits.
 
-![](./media/image5.png)
+![](./media/image5.png){width="5.951999125109361in"
+height="3.568584864391951in"}
