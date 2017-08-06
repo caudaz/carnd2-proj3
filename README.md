@@ -3,8 +3,7 @@
 **Term2 – Project3: Unscented Kalman Filter (UKF)**
 
 ![C:\\Users\\ab\\AppData\\Local\\Microsoft\\Windows\\INetCache\\Content.Word\\2017-08-05
-11\_15\_02-Photos.png](./media/image1.png){width="4.831944444444445in"
-height="2.502795275590551in"}
+11\_15\_02-Photos.png](./media/image1.png)
 
 **INTRODUCTION**
 
@@ -18,8 +17,7 @@ be found.
 **PARTICLE FILTER FLOWCHART (UDACITY)**
 
 ![C:\\Users\\ab\\AppData\\Local\\Microsoft\\Windows\\INetCache\\Content.Word\\2017-08-05
-10\_40\_03-Photos.png](./media/image2.png){width="6.404486001749781in"
-height="3.6098009623797025in"}
+10\_40\_03-Photos.png](./media/image2.png)
 
 **INITIALIZATION**
 
@@ -56,13 +54,11 @@ function. It uses as inputs:
 -   landmarks (map is provided with 42 landmarks with location in global
     CS):
 
-> ![](./media/image3.png){width="2.9518799212598426in"
-> height="1.9840004374453193in"}
+> ![](./media/image3.png)
 
 -   observations(measurements to each landmark):
 
-> ![](./media/image4.png){width="2.16799978127734in"
-> height="1.98498687664042in"}
+> ![](./media/image4.png)
 
 -   the standard deviation of those observations
 
@@ -102,5 +98,4 @@ The particle model was able to use all 42 landmarks, observations, speed
 and yaw rate to stay on track. The error stayed within the allowed
 limits.
 
-![](./media/image5.png){width="5.951999125109361in"
-height="3.568584864391951in"}
+![](./media/image5.png)
