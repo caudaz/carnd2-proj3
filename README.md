@@ -1,6 +1,6 @@
 # **Self-Driving Car Engineer Nanodegree** #
 
-# **Term2 – Project3: Unscented Kalman Filter (UKF)** #
+# **Term2 – Project3: Particle Filters** #
 
 ![C:\\Users\\ab\\AppData\\Local\\Microsoft\\Windows\\INetCache\\Content.Word\\2017-08-05
 11\_15\_02-Photos.png](./media/image1.png)
